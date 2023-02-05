@@ -1,0 +1,17 @@
+{
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist/**/*"],
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "esnext",
+    "module": "CommonJS",
+    "lib": ["ESNext"],
+    "typeRoots": ["node_modules/@types"],
+    "moduleResolution": "nodenext",
+    "checkJs": true,
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "declarationMap": true
+  }
+}

@@ -1,6 +1,6 @@
 const mapValuesDeep = require("map-values-deep");
 
-const hide = (s) => (s == null ? s : "*".repeat(s?.length || 1));
+const hide = (s) => "*".repeat(s?.length ?? 0);
 const test = (pat, s) => pat.test?.(s) ?? s.includes?.(pat);
 
 const hideKeys = (keys) => (value, key) =>

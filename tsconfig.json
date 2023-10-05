@@ -4,10 +4,10 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "esnext",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "lib": ["ESNext"],
     "typeRoots": ["node_modules/@types"],
-    "moduleResolution": "nodenext",
+    "moduleResolution": "NodeNext",
     "checkJs": true,
     "allowJs": true,
     "declaration": true,

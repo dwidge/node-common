@@ -8,19 +8,23 @@ const cronstrue = require("cronstrue");
  * @property {String} name
  * @property {String} cron
  * @property {Function} test
- * @property {Function} [logVerbose]
- * @property {Function} [logSuccess]
- * @property {Function} [logError]
+ * @property {LogMethods} [log]
  * @property {Boolean} [startup]
  */
 
 /**
  * @typedef JobDefaults
  * @type {Object}
- * @property {Function} [logVerbose]
- * @property {Function} [logSuccess]
- * @property {Function} [logError]
+ * @property {LogMethods} [log]
  * @property {Boolean} [startup]
+ */
+
+/**
+ * @typedef LogMethods
+ * @type {Object}
+ * @property {Function} [verbose]
+ * @property {Function} [success]
+ * @property {Function} [error]
  */
 
 const sampleJobs = [
@@ -38,7 +42,7 @@ const sampleJobs = [
   },
 ];
 
-function createJob({ name, test, logVerbose, logError, logSuccess }) {
+function createJob({ name, test, log }) {
   let count = 0;
   let lastTime;
 
@@ -47,20 +51,17 @@ function createJob({ name, test, logVerbose, logError, logSuccess }) {
     const distance = lastTime
       ? formatDistance(lastTime, currentTime, { addSuffix: true })
       : null;
-    logVerbose?.(
-      `Cron ${name} (${count} runs, last run ${distance ?? "never"})...`
-    );
+    log.verbose?.(name, `${count} runs, last run ${distance ?? "never"}`);
 
     lastTime = currentTime;
     count++;
 
     try {
-      logVerbose?.(`Run ${name}...`);
+      log.verbose?.(name, "running...");
       await test();
-      logSuccess?.(`Success ${name}.`);
+      log.success?.(name, "success");
     } catch (e) {
-      logError?.(`Error ${name}: ` + e.message);
-      logVerbose?.(e);
+      log.error?.(name, e);
     }
   };
 }
@@ -80,16 +81,12 @@ function readableFromCron(cron) {
 module.exports = async function cron(
   jobs = sampleJobs,
   {
-    logVerbose = console.log,
-    logSuccess = console.log,
-    logError = console.log,
+    log = { verbose: console.log, success: console.log, error: console.log },
     startup = false,
   } = {}
 ) {
   const defaults = {
-    logVerbose,
-    logSuccess,
-    logError,
+    log,
     startup,
   };
 
@@ -103,9 +100,9 @@ module.exports = async function cron(
   jobRunners.forEach((job) => {
     const readable = readableFromCron(job.cron);
     if (readable) {
-      logVerbose?.(`Cron ${job.name} (will run ${readable})`);
+      log.verbose?.(job.name, `will run ${readable}`);
       schedule.scheduleJob(job.cron, job.runner);
-    } else logError?.(`Cron ${job.name} (will not run)`);
+    } else log.error?.(job.name, `will not run`);
   });
 
   for (let job of jobRunners) {

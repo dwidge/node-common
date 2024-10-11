@@ -1,6 +1,6 @@
-const schedule = require("node-schedule");
-const { formatDistance } = require("date-fns");
-const cronstrue = require("cronstrue");
+import schedule from "node-schedule";
+import { formatDistance } from "date-fns";
+import cronstrue from "cronstrue";
 
 /**
  * @typedef JobDescriptor
@@ -78,7 +78,7 @@ function readableFromCron(cron) {
  * @param {JobDescriptor[]} jobs
  * @param {JobDefaults} defaults
  */
-module.exports = async function cron(
+export async function cron(
   jobs = sampleJobs,
   {
     log = { verbose: console.log, success: console.log, error: console.log },
@@ -108,4 +108,4 @@ module.exports = async function cron(
   for (let job of jobRunners) {
     if (job.startup) await job.runner();
   }
-};
+}

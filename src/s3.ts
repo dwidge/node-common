@@ -1,6 +1,6 @@
-const fs = require("fs");
-const S3 = require("aws-sdk/clients/s3");
-const { rethrow, rethrowAsync } = require("./rethrow");
+import fs from "fs";
+import S3 from "aws-sdk/clients/s3";
+import { rethrow, rethrowAsync } from "./rethrow";
 
 /**
  * @param {Object} param0
@@ -110,7 +110,7 @@ async function deleteObject(s3, Bucket, Key) {
 }
 
 //stackoverflow.com/a/49888947
-async function getMoreKeys(s3, params, allKeys = []) {
+async function getMoreKeys(s3, params, allKeys: string[] = []) {
   const response = await rethrowAsync(() => s3.listObjectsV2(params).promise());
   response.Contents.forEach((obj) => allKeys.push(obj.Key));
 
@@ -130,7 +130,7 @@ async function getKeys(s3, Bucket) {
   return await getMoreKeys(s3, { Bucket });
 }
 
-module.exports = {
+export {
   create,
   uploadFile,
   uploadStream,

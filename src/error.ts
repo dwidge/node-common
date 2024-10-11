@@ -1,4 +1,4 @@
-class GenericError extends Error {
+export class GenericError extends Error {
   constructor(message = "") {
     super(message);
     this.name = this.constructor.name;
@@ -11,7 +11,10 @@ function parse(s) {
   } catch (e) {}
 }
 
-class NetworkError extends GenericError {
+export class NetworkError extends GenericError {
+  public status = 500;
+  public request = {};
+  public response = {};
   constructor(e) {
     super(e.message);
     this.status = 500;
@@ -24,16 +27,12 @@ class NetworkError extends GenericError {
   }
 }
 
-class AssertError extends GenericError {
+export class AssertError extends GenericError {
+  public status = 500;
+  public context = {};
   constructor(m, context) {
     super(m);
     this.status = 500;
     this.context = context;
   }
 }
-
-module.exports = {
-  GenericError,
-  NetworkError,
-  AssertError,
-};

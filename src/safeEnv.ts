@@ -1,4 +1,4 @@
-function safeEnv(env) {
+export function safeEnv(env) {
   switch (env) {
     case "test":
       return "test";
@@ -8,4 +8,3 @@ function safeEnv(env) {
       return "production";
   }
 }
-module.exports = safeEnv;

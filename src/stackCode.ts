@@ -1,4 +1,4 @@
-import { camelCase } from "change-case";
+import { camelCase } from "./changeCase.js";
 
 export const stackCode = ({ stack } = new Error(), root = "controllers") =>
   stack

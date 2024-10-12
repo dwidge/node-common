@@ -14,9 +14,6 @@ importers:
       axios:
         specifier: ^1.7.7
         version: 1.7.7
-      change-case:
-        specifier: ^5.4.4
-        version: 5.4.4
       cronstrue:
         specifier: ^2.50.0
         version: 2.50.0
@@ -120,9 +117,6 @@ packages:
 
   call-bind@1.0.2:
     resolution: {integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==}
-
-  change-case@5.4.4:
-    resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
 
   character-entities@2.0.2:
     resolution: {integrity: sha512-shx7oQ0Awen/BRIdkjkvz54PnEEI/EjwXDSIZp86/KKdbafHh1Df/RYGBhn4hbe2+uKC9FnT5UCEdyPz3ai9hQ==}
@@ -598,8 +592,6 @@ snapshots:
     dependencies:
       function-bind: 1.1.1
       get-intrinsic: 1.2.0
-
-  change-case@5.4.4: {}
 
   character-entities@2.0.2: {}
 

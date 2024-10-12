@@ -1,6 +1,6 @@
 import fs from "fs";
 import S3 from "aws-sdk/clients/s3";
-import { rethrow, rethrowAsync } from "./rethrow";
+import { rethrow, rethrowAsync } from "./rethrow.js";
 
 /**
  * @param {Object} param0

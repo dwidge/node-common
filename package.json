@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "prepare": "rimraf dist && ncp assets/ dist/ && tsc -b tsconfig*",
-    "test": "node --test"
+    "test": "node --test --test-name-pattern"
   },
   "peerDependencies": {
     "aws-sdk": "^2.1691.0",

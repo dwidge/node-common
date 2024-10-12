@@ -1,16 +1,37 @@
 import fs from "fs";
-import { glob } from "glob";
-import util from "util";
+import path from "path";
 
-export const getAllFiles = async (src: string) =>
-  (await util.promisify(glob)(src + "/**/*", {})) as string[];
+// Function to get all files in a directory recursively
+export const getAllFiles = async (dir: string): Promise<string[]> => {
+  let files: string[] = [];
 
-export const getTotalSize = async function (directoryPath: string) {
+  const entries = await fs.promises.readdir(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      // Recursively call getAllFiles for subdirectories
+      const subFiles = await getAllFiles(fullPath);
+      files = files.concat(subFiles);
+    } else {
+      // If it's a file, add it to the list
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+};
+
+// Function to calculate the total size of all files in a directory
+export const getTotalSize = async (directoryPath: string): Promise<number> => {
   const arrayOfFiles = await getAllFiles(directoryPath);
   let totalSize = 0;
-  arrayOfFiles.forEach(function (filePath) {
-    const fileSize = fs.statSync(filePath).size;
-    totalSize += fileSize;
-  });
+
+  for (const filePath of arrayOfFiles) {
+    const fileStats = await fs.promises.stat(filePath);
+    totalSize += fileStats.size;
+  }
+
   return totalSize;
 };

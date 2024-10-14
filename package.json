@@ -1,6 +1,6 @@
 {
   "name": "@dwidge/node-common",
-  "version": "1.0.7",
+  "version": "1.0.13",
   "description": "Useful functions for NodeJS.",
   "author": "DWJ",
   "license": "BSL-1.0",

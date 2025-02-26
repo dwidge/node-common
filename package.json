@@ -1,6 +1,6 @@
 {
   "name": "@dwidge/node-common",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Useful functions for NodeJS.",
   "author": "DWJ",
   "license": "BSL-1.0",
@@ -41,7 +41,7 @@
     "ncp": "^2.0.0",
     "prettier-plugin-jsdoc": "^1.3.0",
     "rimraf": "^6.0.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.3"
   },
   "publishConfig": {
     "access": "public"

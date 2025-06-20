@@ -1,33 +1,27 @@
-import schedule from "node-schedule";
-import { formatDistance } from "date-fns";
 import cronstrue from "cronstrue";
+import { formatDistance } from "date-fns";
+import schedule from "node-schedule";
 
-/**
- * @typedef JobDescriptor
- * @type {Object}
- * @property {String} name
- * @property {String} cron
- * @property {Function} test
- * @property {LogMethods} [log]
- * @property {Boolean} [startup]
- */
+interface LogMethods {
+  verbose?: (...args: any[]) => void;
+  success?: (...args: any[]) => void;
+  error?: (...args: any[]) => void;
+}
 
-/**
- * @typedef JobDefaults
- * @type {Object}
- * @property {LogMethods} [log]
- * @property {Boolean} [startup]
- */
+interface JobDescriptor {
+  name: string;
+  cron: string;
+  test: () => any | Promise<any>;
+  log?: LogMethods;
+  startup?: boolean;
+}
 
-/**
- * @typedef LogMethods
- * @type {Object}
- * @property {Function} [verbose]
- * @property {Function} [success]
- * @property {Function} [error]
- */
+interface JobDefaults {
+  log?: LogMethods;
+  startup?: boolean;
+}
 
-const sampleJobs = [
+const sampleJobs: JobDescriptor[] = [
   {
     name: "JobA",
     cron: "*/1 * * * *",
@@ -38,15 +32,22 @@ const sampleJobs = [
     name: "JobB",
     cron: "0 */1 * * *",
     test: () => console.log("Running JobB..."),
-    logSuccess: null,
   },
 ];
 
-function createJob({ name, test, log }) {
+function createJob({
+  name,
+  test,
+  log,
+}: {
+  name: string;
+  test: () => unknown | Promise<unknown>;
+  log: LogMethods;
+}): () => Promise<void> {
   let count = 0;
-  let lastTime;
+  let lastTime: number | undefined;
 
-  return async function runJob() {
+  return async function runJob(): Promise<void> {
     const currentTime = Date.now();
     const distance = lastTime
       ? formatDistance(lastTime, currentTime, { addSuffix: true })
@@ -66,7 +67,7 @@ function createJob({ name, test, log }) {
   };
 }
 
-function readableFromCron(cron) {
+function readableFromCron(cron: string): string | undefined {
   try {
     return cronstrue.toString(cron);
   } catch (e) {
@@ -74,18 +75,14 @@ function readableFromCron(cron) {
   }
 }
 
-/**
- * @param {JobDescriptor[]} jobs
- * @param {JobDefaults} defaults
- */
 export async function cron(
-  jobs = sampleJobs,
+  jobs: JobDescriptor[] = sampleJobs,
   {
     log = { verbose: console.log, success: console.log, error: console.log },
     startup = false,
-  } = {}
-) {
-  const defaults = {
+  }: JobDefaults = {},
+): Promise<void> {
+  const defaults: JobDefaults = {
     log,
     startup,
   };
@@ -95,7 +92,10 @@ export async function cron(
       ...defaults,
       ...job,
     }))
-    .map((job) => ({ ...job, runner: createJob(job) }));
+    .map((job) => ({
+      ...job,
+      runner: createJob({ ...job, log: job.log ?? log }),
+    }));
 
   jobRunners.forEach((job) => {
     const readable = readableFromCron(job.cron);

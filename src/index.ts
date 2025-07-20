@@ -6,7 +6,6 @@ export * from "./error.js";
 export * from "./hideValues.js";
 export * from "./objCase.js";
 export * from "./rethrow.js";
-export * from "./s3.js";
 export * from "./safeEnv.js";
 export * from "./sleep.js";
 export * from "./stackCode.js";

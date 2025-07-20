@@ -27,7 +27,6 @@
     "test": "node --test --test-name-pattern"
   },
   "peerDependencies": {
-    "aws-sdk": "^2.1691.0",
     "axios": "^1.7.7",
     "cronstrue": "^2.50.0",
     "date-fns": "^4.1.0",
